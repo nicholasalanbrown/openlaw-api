@@ -1,0 +1,22 @@
+type Query {
+  proposals: [Proposal!]
+  proposal(id: ID!): Proposal
+  proposalBySlug(slug: String!): Proposal
+}
+
+type Mutation {
+  createProposal(title: String!): Proposal!
+
+  updateProposal(id: ID!, title: String!): Proposal!
+
+  deleteProposal(id: ID!): Boolean
+}
+
+type Proposal {
+  id: ID!
+  title: String!
+  slug: String!
+  gitlabProjectId: Int!
+  createdAt: String!
+  updatedAt: String!
+}
