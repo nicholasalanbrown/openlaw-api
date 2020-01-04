@@ -15,4 +15,13 @@ export class ProposalsEntity extends Base {
   @Column({ type: 'int' })
   gitlabProjectId: number;
 
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column({ type: 'text', nullable: true })
+  summary: string;
+
+  @Column({ type: 'text', nullable: true })
+  legal: string;
+
 }

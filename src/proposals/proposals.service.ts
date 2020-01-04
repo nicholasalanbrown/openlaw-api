@@ -19,9 +19,12 @@ export class ProposalsService {
   }
 
   async findOneById(id: string) {
-    return await this.proposalsRepository.findOne({
+    const postgresRecord = await this.proposalsRepository.findOne({
       where: { id },
     });
+    const gitlabRecord = await gitlab.getProject(1);
+    console.log(gitlabRecord)
+    return postgresRecord;
   }
 
   async findOneBySlug(slug: string) {
