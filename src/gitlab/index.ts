@@ -83,6 +83,50 @@ export const createBranch = async (projectId: number, newBranchName: string, sou
     });
 };
 
+export const commitToBranch = async (
+    projectId: number,
+    branchName: string, 
+    message: string,
+    title: string,
+    description: string,
+    summary: string,
+    legal: string,
+  ) => {
+    console.log(projectId, branchName, message, title, description, summary, legal)
+  return axios
+    .post(`${process.env.GITLAB_BASE_URL}/projects/${projectId}/repository/commits?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
+      id: projectId,
+      branch: branchName,
+      commit_message: message,
+      actions: [
+        {
+          action: 'update',
+          file_path: 'metadata.json',
+          content: JSON.stringify({
+            title,
+            description,
+          }),
+        },
+        {
+          action: 'update',
+          file_path: 'summary.md',
+          content: summary,
+        },
+        {
+          action: 'update',
+          file_path: 'legal.md',
+          content: legal,
+        },
+      ],
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
 export const deleteBranch = async (projectId: number, branchName: string) => {
   return axios
     .delete(`${process.env.GITLAB_BASE_URL}/projects/${projectId}/repository/branches/${branchName}?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {

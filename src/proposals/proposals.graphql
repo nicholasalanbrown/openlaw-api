@@ -9,6 +9,16 @@ type Mutation {
 
   createBranch(id: ID!, newBranchName: String!, sourceBranchName: String!): Proposal!
 
+  commitToBranch(
+    proposalId: ID!,
+    branchName: String!,
+    message: String!,
+    title: String!,
+    description: String!,
+    summary: String!,
+    legal: String!
+  ): Proposal!
+
   deleteBranch(proposalId: ID!, branchName: String!): Proposal!
 
   updateProposal(id: ID!, title: String!): Proposal!

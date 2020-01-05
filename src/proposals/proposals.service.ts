@@ -70,6 +70,36 @@ export class ProposalsService {
     return proposal;
   }
 
+  async commitToBranch(
+    propoosalId: string,
+    branchName: string,
+    message: string,
+    title: string,
+    description: string,
+    summary: string,
+    legal: string,
+    ) {
+    const proposal = await this.proposalsRepository.findOne({
+      where: [{ id: propoosalId }],
+    });
+
+    if (!proposal) {
+      throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
+    }
+
+    const newCommit = await gitlab.commitToBranch(
+      proposal.gitlabProjectId,
+      branchName,
+      message,
+      title,
+      description,
+      summary,
+      legal,
+    );
+
+    return proposal;
+  }
+
   async deleteBranch(propoosalId: string, branchName: string) {
     const proposal = await this.proposalsRepository.findOne({
       where: [{ id: propoosalId }],

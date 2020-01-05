@@ -51,6 +51,8 @@ export abstract class IMutation {
 
     abstract createBranch(id: string, newBranchName: string, sourceBranchName: string): Proposal | Promise<Proposal>;
 
+    abstract commitToBranch(proposalId: string, branchName: string, message: string, title: string, description: string, summary: string, legal: string): Proposal | Promise<Proposal>;
+
     abstract deleteBranch(proposalId: string, branchName: string): Proposal | Promise<Proposal>;
 
     abstract updateProposal(id: string, title: string): Proposal | Promise<Proposal>;

@@ -41,6 +41,27 @@ export class ProposalsResolvers {
     return await this.proposalsService.createBranch(id, newBranchName, sourceBranchName);
   }
 
+  @Mutation('commitToBranch')
+  async commitToBranch(
+    @Args('proposalId') proposalId: string,
+    @Args('branchName') branchName: string,
+    @Args('message') message: string,
+    @Args('title') title: string,
+    @Args('description') description: string,
+    @Args('summary') summary: string,
+    @Args('legal') legal: string,
+    ): Promise<ProposalsDto> {
+    return await this.proposalsService.commitToBranch(
+      proposalId,
+      branchName,
+      message,
+      title,
+      description,
+      summary,
+      legal,
+    );
+  }
+
   @Mutation('deleteBranch')
   async deleteBranch(
     @Args('proposalId') proposalId: string,
