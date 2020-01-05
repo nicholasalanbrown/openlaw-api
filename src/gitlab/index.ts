@@ -35,7 +35,7 @@ export const createProject = async name => {
     });
 };
 
-export const seedProject = async (id, title) => {
+export const seedRepo = async (id, title) => {
   return axios
     .post(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/commits?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
       id,
@@ -59,6 +59,21 @@ export const seedProject = async (id, title) => {
           file_path: 'legal.md',
         },
       ],
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+export const createBranch = async (projectId: number, newBranchName: string, sourceBranchName: string) => {
+  return axios
+    .post(`${process.env.GITLAB_BASE_URL}/projects/${projectId}/repository/branches?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
+      projectId,
+      branch: newBranchName,
+      ref: sourceBranchName,
     })
     .then(response => {
       return response.data;

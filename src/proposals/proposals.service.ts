@@ -43,7 +43,7 @@ export class ProposalsService {
     }
 
     const gitlabProject = await gitlab.createProject(title);
-    await gitlab.seedProject(gitlabProject.id, title);
+    await gitlab.seedRepo(gitlabProject.id, title);
 
     proposal = await this.proposalsRepository.create({
       title,
@@ -52,6 +52,20 @@ export class ProposalsService {
     });
 
     await this.proposalsRepository.save(proposal);
+
+    return proposal;
+  }
+
+  async createBranch(id: string, newBranchName: string, sourceBranchName: string) {
+    const proposal = await this.proposalsRepository.findOne({
+      where: [{ id }],
+    });
+
+    if (!proposal) {
+      throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
+    }
+
+    const newBranch = await gitlab.createBranch(proposal.gitlabProjectId, newBranchName, sourceBranchName );
 
     return proposal;
   }

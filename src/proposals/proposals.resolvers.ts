@@ -32,6 +32,15 @@ export class ProposalsResolvers {
     return await this.proposalsService.createProposal(title);
   }
 
+  @Mutation('createBranch')
+  async createBranch(
+    @Args('id') id: string,
+    @Args('newBranchName') newBranchName: string,
+    @Args('sourceBranchName') sourceBranchName: string,
+    ): Promise<ProposalsDto> {
+    return await this.proposalsService.createBranch(id, newBranchName, sourceBranchName);
+  }
+
   @Mutation('updateProposal')
   async updateProposal(
     @Args('id') id: string,

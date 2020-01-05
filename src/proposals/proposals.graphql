@@ -7,6 +7,8 @@ type Query {
 type Mutation {
   createProposal(title: String!): Proposal!
 
+  createBranch(id: ID!, newBranchName: String!, sourceBranchName: String!): Proposal!
+
   updateProposal(id: ID!, title: String!): Proposal!
 
   deleteProposal(id: ID!): Boolean
