@@ -82,3 +82,19 @@ export const createBranch = async (projectId: number, newBranchName: string, sou
       console.log(error);
     });
 };
+
+export const deleteBranch = async (projectId: number, branchName: string) => {
+  return axios
+    .delete(`${process.env.GITLAB_BASE_URL}/projects/${projectId}/repository/branches/${branchName}?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
+        params: { 
+          id: projectId,
+          branch: branchName,
+      },
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};

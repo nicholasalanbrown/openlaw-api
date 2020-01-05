@@ -51,6 +51,8 @@ export abstract class IMutation {
 
     abstract createBranch(id: string, newBranchName: string, sourceBranchName: string): Proposal | Promise<Proposal>;
 
+    abstract deleteBranch(proposalId: string, branchName: string): Proposal | Promise<Proposal>;
+
     abstract updateProposal(id: string, title: string): Proposal | Promise<Proposal>;
 
     abstract deleteProposal(id: string): boolean | Promise<boolean>;

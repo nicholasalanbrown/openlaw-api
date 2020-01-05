@@ -41,6 +41,14 @@ export class ProposalsResolvers {
     return await this.proposalsService.createBranch(id, newBranchName, sourceBranchName);
   }
 
+  @Mutation('deleteBranch')
+  async deleteBranch(
+    @Args('proposalId') proposalId: string,
+    @Args('branchName') branchName: string,
+    ): Promise<ProposalsDto> {
+    return await this.proposalsService.deleteBranch(proposalId, branchName );
+  }
+
   @Mutation('updateProposal')
   async updateProposal(
     @Args('id') id: string,
