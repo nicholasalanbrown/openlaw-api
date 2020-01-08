@@ -1,9 +1,11 @@
-import { ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ParseIntPipe, Injectable, UseGuards } from '@nestjs/common';
+import { GqlExecutionContext, Context } from '@nestjs/graphql'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { ProposalsService } from './proposals.service';
 import { ProposalsDto } from './dto/proposals.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { GqlAuthGuard } from '../auth/auth.guard';
+import { CurrentUser } from '../auth/currentuser';
 import { RolesGuard } from '../auth/guards/roles.guard';
 const pubSub = new PubSub();
 
@@ -17,6 +19,7 @@ export class ProposalsResolvers {
     return await this.proposalsService.findAll();
   }
 
+  @UseGuards(GqlAuthGuard)
   @Query('proposal')
   async findOneById(@Args('id') id: string): Promise<ProposalsDto> {
     return await this.proposalsService.findOneById(id);

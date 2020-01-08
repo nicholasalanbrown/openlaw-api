@@ -56,6 +56,41 @@ export class ProposalsService {
     return proposal;
   }
 
+  async updateProposal(id: string, title: string) {
+    let proposal = await this.proposalsRepository.findOne({
+      where: { id },
+    });
+
+    if (!proposal) {
+      throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.proposalsRepository.update({ id }, { 
+      title,
+      slug: slugify(title, { lower: true }),
+    });
+
+    proposal = await this.proposalsRepository.findOne({
+      where: { id },
+    });
+
+    return proposal;
+  }
+
+  async deleteProposal(id: string) {
+    const proposal = await this.proposalsRepository.findOne({
+      where: { id },
+    });
+
+    if (!proposal) {
+      throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.proposalsRepository.remove(proposal);
+
+    return !proposal.id;
+  }
+
   async createBranch(id: string, newBranchName: string, sourceBranchName: string) {
     const proposal = await this.proposalsRepository.findOne({
       where: [{ id }],
@@ -112,40 +147,5 @@ export class ProposalsService {
     const newBranch = await gitlab.deleteBranch(proposal.gitlabProjectId, branchName );
 
     return proposal;
-  }
-
-  async updateProposal(id: string, title: string) {
-    let proposal = await this.proposalsRepository.findOne({
-      where: { id },
-    });
-
-    if (!proposal) {
-      throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
-    }
-
-    await this.proposalsRepository.update({ id }, { 
-      title,
-      slug: slugify(title, { lower: true }),
-    });
-
-    proposal = await this.proposalsRepository.findOne({
-      where: { id },
-    });
-
-    return proposal;
-  }
-
-  async deleteProposal(id: string) {
-    const proposal = await this.proposalsRepository.findOne({
-      where: { id },
-    });
-
-    if (!proposal) {
-      throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
-    }
-
-    await this.proposalsRepository.remove(proposal);
-
-    return !proposal.id;
   }
 }

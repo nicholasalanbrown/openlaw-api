@@ -24,11 +24,9 @@ import { AppGateway } from './app.gateway';
     RolesModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
-      context: ({ req, res, connection, payload }) => {
-        if (req) {
-          return { headers: req.headers };
-        }
-      },
+      context: ({ req }) => {
+        console.log(req)
+        return { req }},
       installSubscriptionHandlers: true,
       definitions: {
         path: join(process.cwd(), 'src/graphql.schema.ts'),
