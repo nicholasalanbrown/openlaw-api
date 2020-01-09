@@ -12,6 +12,10 @@ const typeorm_1 = require("@nestjs/typeorm");
 const path_1 = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const users_entity_1 = require("./users/users.entity");
+const roles_entity_1 = require("./roles/roles.entity");
+const proposals_entity_1 = require("./proposals/proposals.entity");
+const messages_entity_1 = require("./messages/messages.entity");
 const users_module_1 = require("./users/users.module");
 const roles_module_1 = require("./roles/roles.module");
 const proposals_module_1 = require("./proposals/proposals.module");
@@ -24,7 +28,19 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     common_1.Module({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot(),
+            typeorm_1.TypeOrmModule.forRoot({
+                name: 'default',
+                type: 'postgres',
+                host: 'localhost',
+                port: 5432,
+                username: 'openlaw',
+                password: 'openlaw',
+                database: 'openlaw',
+                synchronize: true,
+                dropSchema: false,
+                logging: true,
+                entities: [users_entity_1.UsersEntity, roles_entity_1.RolesEntity, proposals_entity_1.ProposalsEntity, messages_entity_1.MessagesEntity],
+            }),
             auth_module_1.AuthModule,
             messages_module_1.MessagesModule,
             proposals_module_1.ProposalsModule,
@@ -33,7 +49,6 @@ AppModule = __decorate([
             graphql_1.GraphQLModule.forRoot({
                 typePaths: ['./**/*.graphql'],
                 context: ({ req }) => {
-                    console.log(req);
                     return { req };
                 },
                 installSubscriptionHandlers: true,
