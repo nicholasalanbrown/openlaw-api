@@ -5,6 +5,7 @@ import { ProposalsEntity } from './proposals.entity';
 import slugify from 'slugify';
 
 import * as gitlab from '../gitlab';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class ProposalsService {
@@ -28,9 +29,23 @@ export class ProposalsService {
   }
 
   async findOneBySlug(slug: string) {
-    return await this.proposalsRepository.findOne({
+    const postgresRecord = await this.proposalsRepository.findOne({
       where: { slug },
     });
+    const branches = await gitlab.getBranches(postgresRecord.gitlabProjectId);
+    const commits = await gitlab.getCommits(postgresRecord.gitlabProjectId);
+    const filteredBranches = branches.map(branch => branch.name);
+    const filteredCommits = commits.map(commit => {
+      return {
+        id: commit.id,
+        title: commit.title,
+      };
+    });
+    return {
+      ...postgresRecord,
+      branches: filteredBranches,
+      commits: filteredCommits,
+    };
   }
 
   async createProposal(

@@ -95,6 +95,28 @@ export const createBranch = async (projectId: number, newBranchName: string, sou
     });
 };
 
+export const getBranches = async (projectId: number) => {
+  return axios
+    .get(`${process.env.GITLAB_BASE_URL}/projects/${projectId}/repository/branches?private_token=${process.env.GITLAB_ACCESS_TOKEN}`)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+export const getCommits = async (id: number) => {
+  return axios
+    .get(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/commits?private_token=${process.env.GITLAB_ACCESS_TOKEN}`)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
 export const commitToBranch = async (
     projectId: number,
     branchName: string, 

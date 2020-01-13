@@ -5,9 +5,16 @@ type Proposal {
   summary: String!,
   legal: String!,
   slug: String!
-  gitlabProjectId: Int!
+  gitlabProjectId: Int!,
+  branches: [String],
+  commits: [Commit],
   createdAt: String!
   updatedAt: String!
+}
+
+type Commit {
+  id: String,
+  title: String
 }
 
 type Query {

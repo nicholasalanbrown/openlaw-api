@@ -22,6 +22,11 @@ export class UpdateUseInput {
     roleName: string;
 }
 
+export class Commit {
+    id?: string;
+    title?: string;
+}
+
 export class Message {
     id: string;
     text: string;
@@ -89,6 +94,8 @@ export class Proposal {
     legal: string;
     slug: string;
     gitlabProjectId: number;
+    branches?: string[];
+    commits?: Commit[];
     createdAt: string;
     updatedAt: string;
 }
