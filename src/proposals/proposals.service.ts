@@ -28,12 +28,12 @@ export class ProposalsService {
     return postgresRecord;
   }
 
-  async findOneBySlug(slug: string) {
+  async findOneBySlug(slug: string, branchName?: string) {
     const postgresRecord = await this.proposalsRepository.findOne({
       where: { slug },
     });
     const branches = await gitlab.getBranches(postgresRecord.gitlabProjectId);
-    const commits = await gitlab.getCommits(postgresRecord.gitlabProjectId);
+    const commits = await gitlab.getCommits(postgresRecord.gitlabProjectId, branchName);
     const filteredBranches = branches.map(branch => branch.name);
     const filteredCommits = commits.map(commit => {
       return {

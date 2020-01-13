@@ -20,7 +20,7 @@ type Commit {
 type Query {
   proposals: [Proposal!]
   proposal(id: ID!): Proposal
-  proposalBySlug(slug: String!): Proposal
+  proposalBySlug(slug: String!, branchName: String): Proposal
 }
 
 type Mutation {

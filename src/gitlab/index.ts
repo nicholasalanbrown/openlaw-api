@@ -106,9 +106,13 @@ export const getBranches = async (projectId: number) => {
     });
 };
 
-export const getCommits = async (id: number) => {
+export const getCommits = async (id: number, branchName: string = 'master') => {
   return axios
-    .get(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/commits?private_token=${process.env.GITLAB_ACCESS_TOKEN}`)
+    .get(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/commits?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
+      params: {
+        ref_name: branchName,
+      },
+    })
     .then(response => {
       return response.data;
     })

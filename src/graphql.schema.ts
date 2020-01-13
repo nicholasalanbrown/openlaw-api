@@ -109,7 +109,7 @@ export abstract class IQuery {
 
     abstract proposal(id: string): Proposal | Promise<Proposal>;
 
-    abstract proposalBySlug(slug: string): Proposal | Promise<Proposal>;
+    abstract proposalBySlug(slug: string, branchName?: string): Proposal | Promise<Proposal>;
 
     abstract roles(): Role[] | Promise<Role[]>;
 

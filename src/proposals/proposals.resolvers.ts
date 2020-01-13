@@ -26,8 +26,11 @@ export class ProposalsResolvers {
   }
 
   @Query('proposalBySlug')
-  async findOneBySlug(@Args('slug') slug: string): Promise<ProposalsDto> {
-    return await this.proposalsService.findOneBySlug(slug);
+  async findOneBySlug(
+    @Args('slug') slug: string,
+    @Args('branchName') branchName: string,
+    ): Promise<ProposalsDto> {
+    return await this.proposalsService.findOneBySlug(slug, branchName);
   }
 
   @Mutation('createProposal')
