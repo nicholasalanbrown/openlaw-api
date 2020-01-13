@@ -1,3 +1,15 @@
+type Proposal {
+  id: ID!
+  title: String!
+  description: String!,
+  summary: String!,
+  legal: String!,
+  slug: String!
+  gitlabProjectId: Int!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Query {
   proposals: [Proposal!]
   proposal(id: ID!): Proposal
@@ -5,7 +17,12 @@ type Query {
 }
 
 type Mutation {
-  createProposal(title: String!): Proposal!
+  createProposal(
+  title: String!,
+  description: String!,
+  summary: String,
+  legal: String
+  ): Proposal!
 
   createBranch(id: ID!, newBranchName: String!, sourceBranchName: String!): Proposal!
 
@@ -24,13 +41,4 @@ type Mutation {
   updateProposal(id: ID!, title: String!): Proposal!
 
   deleteProposal(id: ID!): Boolean
-}
-
-type Proposal {
-  id: ID!
-  title: String!
-  slug: String!
-  gitlabProjectId: Int!
-  createdAt: String!
-  updatedAt: String!
 }

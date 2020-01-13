@@ -35,13 +35,23 @@ export const createProject = async name => {
     });
 };
 
-export const seedRepo = async (id, title) => {
+export const seedRepo = async (id, title, description, summary, legal) => {
   return axios
     .post(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/commits?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
       id,
       branch: 'master',
       commit_message: 'Proposal created',
       actions: [
+        {
+          action: 'create',
+          file_path: 'title.md',
+          content: title,
+        },
+        {
+          action: 'create',
+          file_path: 'description.md',
+          content: description,
+        },
         {
           action: 'create',
           file_path: 'metadata.json',
@@ -53,10 +63,12 @@ export const seedRepo = async (id, title) => {
         {
           action: 'create',
           file_path: 'summary.md',
+          content: summary,
         },
         {
           action: 'create',
           file_path: 'legal.md',
+          content: legal,
         },
       ],
     })

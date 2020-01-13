@@ -33,7 +33,12 @@ export class ProposalsService {
     });
   }
 
-  async createProposal(title: string) {
+  async createProposal(
+    title: string,
+    description: string,
+    summary: string,
+    legal: string,
+    ) {
     let proposal = await this.proposalsRepository.findOne({
       where: [{ title }],
     });
@@ -43,10 +48,19 @@ export class ProposalsService {
     }
 
     const gitlabProject = await gitlab.createProject(title);
-    await gitlab.seedRepo(gitlabProject.id, title);
+    await gitlab.seedRepo(
+      gitlabProject.id,
+      title,
+      description,
+      summary,
+      legal,
+    );
 
     proposal = await this.proposalsRepository.create({
       title,
+      description,
+      summary,
+      legal,
       slug: slugify(title, { lower: true }),
       gitlabProjectId: gitlabProject.id
     });

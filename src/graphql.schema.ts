@@ -47,7 +47,7 @@ export abstract class IMutation {
 
     abstract deleteMessage(id: string): boolean | Promise<boolean>;
 
-    abstract createProposal(title: string): Proposal | Promise<Proposal>;
+    abstract createProposal(title: string, description: string, summary?: string, legal?: string): Proposal | Promise<Proposal>;
 
     abstract createBranch(id: string, newBranchName: string, sourceBranchName: string): Proposal | Promise<Proposal>;
 
@@ -84,6 +84,9 @@ export class PageInfo {
 export class Proposal {
     id: string;
     title: string;
+    description: string;
+    summary: string;
+    legal: string;
     slug: string;
     gitlabProjectId: number;
     createdAt: string;
