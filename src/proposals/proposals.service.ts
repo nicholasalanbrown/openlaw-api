@@ -32,6 +32,10 @@ export class ProposalsService {
     const postgresRecord = await this.proposalsRepository.findOne({
       where: { slug },
     });
+    if (branchName && branchName !== 'master') {
+      const content = await gitlab.getProjectContent(postgresRecord.gitlabProjectId, branchName);
+      Object.assign(postgresRecord, content);
+    }
     const branches = await gitlab.getBranches(postgresRecord.gitlabProjectId);
     const commits = await gitlab.getCommits(postgresRecord.gitlabProjectId, branchName);
     const filteredBranches = branches.map(branch => branch.name);

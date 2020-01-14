@@ -22,6 +22,38 @@ export const getProjectData = async (id: number) => {
     });
 };
 
+export const getProjectContent = async (id: number, branchName: string = 'master') => {
+  const summary = await axios
+  .get(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/files/summary%2Emd/raw?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
+    params: {
+      ref: branchName,
+    },
+  })
+  .then(response => {
+    return response.data;
+  })
+  .catch(error => {
+    console.log(error);
+  });
+  console.log(summary)
+  const legal = await axios
+  .get(`${process.env.GITLAB_BASE_URL}/projects/${id}/repository/files/legal%2Emd/raw?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
+    params: {
+      ref: branchName,
+    },
+  })
+  .then(response => {
+    return response.data;
+  })
+  .catch(error => {
+    console.log(error);
+  });
+  return {
+    summary,
+    legal,
+  }
+}
+
 export const createProject = async name => {
   return axios
     .post(`${process.env.GITLAB_BASE_URL}/projects?private_token=${process.env.GITLAB_ACCESS_TOKEN}`, {
