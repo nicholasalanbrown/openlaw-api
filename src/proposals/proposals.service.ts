@@ -147,12 +147,28 @@ export class ProposalsService {
     summary: string,
     legal: string,
     ) {
-    const proposal = await this.proposalsRepository.findOne({
+    let proposal = await this.proposalsRepository.findOne({
       where: [{ id: propoosalId }],
     });
 
     if (!proposal) {
       throw new HttpException('Proposal not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (branchName === 'master') {
+
+      await this.proposalsRepository.update({ id: propoosalId }, { 
+        title,
+        slug: slugify(title, { lower: true }),
+        description,
+        summary,
+        legal,
+      });
+
+      proposal = await this.proposalsRepository.findOne({
+        where: { id: propoosalId },
+      });
+
     }
 
     const newCommit = await gitlab.commitToBranch(
